@@ -1,28 +1,65 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 
-function Dashboard() {
-  // State to store user data from the API
-  const [userData, setUserData] = useState([]);
-  
-  // Fetch user data from the API
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get('your-api-endpoint-for-user-data');
-        setUserData(response.data); // Assuming the API returns an array of user data
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
+import { useNavigate } from 'react-router-dom';
 
-    fetchUserData();
-  }, []); // Empty dependency array ensures the effect runs only once on component mount
+function Dashboard() {
+  
+
+  const [userData, setUserData] = useState([{}]);
+  const [userCount, setUserCount] = useState(0);
+  const [newUsers, setNewUsers] = useState(0);
+  const [dailyUsers, setDailyUsers] = useState(0);
+  
+  const history = useNavigate();
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/getUsers')
+      .then((response) => {
+        setUserData(response.data);
+        setUserCount(response.data.length);
+        console.log(response.data.length)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  , []);
+  useEffect(() => {
+    axios.get('http://localhost:8000/newUsers')
+      .then((response) => {
+        console.log(response.data.result.length);
+        setNewUsers(response.data.result.length);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  , []);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/dailyUsers')
+      .then((response) => {
+        console.log(response.data.result.length);
+        setDailyUsers(response.data.result.length);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  } , []);
+  
+
+  
+
 
   // Logout function (you can implement the actual logout logic here)
   const handleLogout = () => {
-    // Add your logout logic here, such as clearing authentication tokens, etc.
+    history('/');
     console.log('Logout clicked');
+  };
+  const gotoUsers = () => {
+    history('/managementApp');
+    console.log('Users clicked');
   };
 
   return (
@@ -40,42 +77,33 @@ function Dashboard() {
           {/* Add your navigation menu items here */}
         </div>
         {/* Logout Button */}
-        <div className="logout-btn" onClick={handleLogout}>
+        <button className="btn btn-primary" onClick={handleLogout}>
           Logout
-        </div>
+        </button>
       </div>
-
-      {/* Dashboard */}
+      <div className="container-fluid bg-white mt-4">
+          <button className='btn btn-primary' onClick={gotoUsers} >Users</button>
+      </div>
+        {/* Dashboard */}
       <div className="dashboard">
         <h3> DASHBOARD</h3>
         {/* Dashboard Cards Static */}
         <div className="cards">
           <div className="card">
             <h2>Total User Count</h2>
-            <p>New</p>
+            <p>{userCount}</p>
           </div>
           <div className="card">
             <h2>New Monthly Users</h2>
-            <p>136</p>
+            <p>{newUsers}</p>
           </div>
           <div className="card">
             <h2>Daily Active User</h2>
-            <p>120</p>
+            <p>{dailyUsers}</p>
           </div>
         </div>
-        <h3>LATEST ACTIVITIES</h3>
-        <div className="user-cards">
-          {/* Render user cards dynamically based on API data */}
-          {/* {userData.map((user) => (
-            <div key={user.id} className="user-card">
-              <h4>{user.name}</h4>
-              <p>Email: {user.email}</p>
-              <p>Last Login: {user.lastLogin}</p>
-              <button onClick={() => handleDeleteAccount(user.id)}>Delete Account</button>
-            </div>
-          ))} */}
-        </div>
       </div>
+
     </>
   );
 }

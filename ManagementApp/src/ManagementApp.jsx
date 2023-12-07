@@ -1,19 +1,56 @@
 import React, { useEffect, useState } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const YourComponent = () => {
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState([{}]);
+ 
+  const [user, setUser] = useState({});
+  const [showDelete, setShowDelete] = useState(false);
+  const [userId, setUserId] = useState('');
+
+  const history = useNavigate();
 
   useEffect(() => {
     fetch('http://localhost:8000/getUsers')
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // Logging the fetched data
-        setUserData(data); // Update state with fetched user data
+        setUserData(data);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   }, []);
+  async function deleteUser() {
+     axios.put('http://localhost:8000/deleteUser', {
+      id: userId,
+    }).then((response) => {
+      console.log(response);
+      window.location.reload();
+    }
+    ).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const isActivityOld = (latestActivity) => {
+    const now = new Date();
+    const oneYearAgo = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+    return new Date(latestActivity) < oneYearAgo;
+  };
+
+  console.log(userData);
+ 
+
+
+
+
+  const goback = () => {
+    history('/dashboard');
+    console.log('Logout clicked');
+  };
+
 
   return (
     <>
@@ -24,7 +61,7 @@ const YourComponent = () => {
         <div className="container px-0">
           <nav className="navbar bg-info border rounded-4 d-flex justify-content-between align-items-center m-0 px-3">
             <p className="display-6 mb-0">Welcome, Admin</p>
-            <button className='btn btn-light'>LOGOUT</button>
+            <button className='btn btn-light' onClick={goback}>Go Back</button>
           </nav>
         </div>
       </div>
@@ -41,15 +78,34 @@ const YourComponent = () => {
               <tr>
                 <th scope='col'>First Name</th>
                 <th scope='col'>Last Name</th>
+                <th scope='col'>Email</th>
+                <th scope='col'>Latest Activity</th>
                 <th scope='col'>Actions</th>
               </tr>
             </thead>
             <tbody>
               {userData.map((user, index) => (
+
                 <tr key={index}>
                   <td>{user.firstname}</td>
                   <td>{user.lastname}</td>
-                  <td> {/* Add action buttons or content here */}</td>
+                  <td>{user.email}</td>
+                  <td>{new Date(user.latest_activity).toLocaleDateString()}</td>
+                  <td> 
+                    {isActivityOld(user.latest_activity) ? (
+                  <button
+                    onClick={() => {
+                      setShowDelete(true);
+                      setUser(user);
+                      setUserId(user.user_id);
+                    }}
+                    className="btn btn-danger"
+                  >
+                    Delete User
+                  </button>
+                ): "Cannot Delete User"}
+                </td>
+
                 </tr>
               ))}
             </tbody>
@@ -58,8 +114,22 @@ const YourComponent = () => {
       </div>
 
       {/* end of table of users */}
+      {showDelete && (
+          <Modal show={true} onHide={() => setShowDelete(false)} backdrop={false}>
+            <Modal.Header>
+              <Modal.Title>Delete User</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>Are you sure you want to delete this user?</p>
+            </Modal.Body>
+            <Modal.Footer>
+            <button className='btn btn-danger' onClick={() => {setShowDelete(false); deleteUser()}}>Delete</button>
+              <button className='btn btn-secondary' onClick={() => setShowDelete(false)}>Cancel</button>
+              
+            </Modal.Footer>
 
-
+          </Modal>
+      )}
 
 
 

@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
+
 function Login() {
   // State variables
   const nav = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -28,7 +30,7 @@ function Login() {
 
       if (response.ok) {
         console.log('Login successful');
-        nav('/managementapp');
+        nav('/dashboard');
         // Redirect to the dashboard or perform further actions upon successful login
       } else {
         const errorData = await response.json();

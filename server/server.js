@@ -5,8 +5,9 @@ const cors = require('cors');
 const mysql = require('mysql');
 
 
+
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5174'],
 }));
 
 app.use(express.json());
@@ -44,6 +45,31 @@ app.get('/getUsers',(req, res)=>{
     });
 })
 
+app.get('/newUsers',(req, res)=>{
+    const sql = `SELECT * FROM users WHERE date_created >= DATE_SUB(NOW(), INTERVAL 1 MONTH)`;
+    db.query(sql, (err, result)=>{
+        if(err){
+            console.log(err);
+        }else{
+            console.log(result);
+            return res.json({result:result});
+        }
+    })
+})
+
+app.get('/dailyUsers',(req, res)=>{
+    const sql = `SELECT * FROM users WHERE latest_activity >= DATE_SUB(NOW(), INTERVAL 1 DAY)`;
+    db.query(sql, (err, result)=>{
+        if(err){
+            console.log(err);
+        }else{
+            console.log(result);
+            return res.json({result:result});
+        }
+    })
+})
+
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
   
@@ -58,20 +84,67 @@ app.post('/login', (req, res) => {
           if (data.length > 0) {
             const storedPassword = data[0].admin_password;
             if (storedPassword === password) {
-              // Passwords match, login successful
               res.json({ message: 'Login successful' });
             } else {
-              // Passwords don't match, login failed
               res.status(401).json({ error: 'Invalid email or password' });
             }
           } else {
-            // No user found with the given email
             res.status(404).json({ error: 'User not found' });
           }
         }
       }
     );
   });  
+
+
+app.put('/deleteUser',(req, res)=>{
+    const {id} = req.body;
+    const deleteExpenses = `DELETE expenses FROM expenses LEFT JOIN budget on expenses.budget_id = budget.budget_id WHERE user_id = ?`;
+    const deleteReminders = `DELETE reminders FROM reminders WHERE user_id = ?`;
+    const deleteBudget = `DELETE budget FROM budget WHERE user_id = ?`;
+    const deleteSavingsAdd = `DELETE savings_add FROM savings_add LEFT JOIN savings on savings_add.savings_id = savings.savings_id WHERE user_id = ?`;
+    const deleteSavings = `DELETE savings FROM savings WHERE user_id = ?`;
+    const deleteUser = `DELETE users FROM users WHERE user_id = ?`;
+    console.log(id);
+    db.query(deleteExpenses, [id], (err, result)=>{
+        if(err){
+            console.log(err);
+        }else{
+            db.query(deleteReminders, [id], (err, result)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    db.query(deleteBudget, [id], (err, result)=>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            db.query(deleteSavingsAdd, [id], (err, result)=>{
+                                if(err){
+                                    console.log(err);
+                                }else{
+                                    db.query(deleteSavings, [id], (err, result)=>{
+                                        if(err){
+                                            console.log(err);
+                                        }else{
+                                            db.query(deleteUser, [id], (err, result)=>{
+                                                if(err){
+                                                    console.log(err);
+                                                }else{
+                                                    res.send(result);
+                                                }
+                                            })
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }
+    })
+})
+
 
 
 
