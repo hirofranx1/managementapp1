@@ -74,6 +74,9 @@ function Dashboard() {
               <button onClick={() => handleDeleteAccount(user.id)}>Delete Account</button>
             </div>
           ))} */}
+          <div className="person-1">person 1</div>
+          <div className="person-2">person 2</div>
+
         </div>
       </div>
     </>
