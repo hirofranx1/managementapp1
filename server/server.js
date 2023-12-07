@@ -6,7 +6,7 @@ const mysql = require('mysql');
 
 
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5174'],
 }));
 
 app.use(express.json());
