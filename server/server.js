@@ -1,11 +1,12 @@
 const express = require('express');
 const app = express();
-const port = 6000;
+const port = 8000;
 const cors = require('cors');
 const mysql = require('mysql');
 
+
 app.use(cors({
-    origin: ['http://localhost:5174'],
+    origin: ['http://localhost:5173'],
 }));
 
 app.use(express.json());
@@ -28,6 +29,20 @@ db.connect((error) => {
 
 //write code here
 
+app.get('/',(req, res)=>{
+    res.send({message: 'hello world'})
+})
+
+
+app.get('/getUsers',(req, res)=>{
+    db.query('SELECT * FROM users',(err, data)=>{
+        if(err){
+            return res.status(500).json({ error: 'Error executing query' });
+        }else{
+            res.send(data);
+        }
+    });
+})
 
 
 
