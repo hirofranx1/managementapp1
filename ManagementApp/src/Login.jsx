@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import logo from './assets/tigum_logos/logopinas.png';
 
 function Login() {
   // State variables
@@ -42,9 +43,9 @@ function Login() {
 
   return (
     <>
-      <div className='container border p-4 m-3 rounded-2 position-absolute top-50 start-50 translate-middle'>
+      <div className='container border p-4 m-3 rounded-2 position-absolute top-50 start-50 translate-middle' style={{ width: '45%'}}>
         <div className='text-center'>
-          <h1>LOGO Here</h1>
+          <img src={logo} alt='Logo' style={{ width: '200px' }}/>
           <p>Admin Area</p>
         </div>
 
