@@ -1,43 +1,42 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import axios from 'axios'; // Make sure to import axios
 
 function Login() {
   // State variables
-  const [email, setEmail] = useState('');
+  const nav = useNavigate();
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // Function to handle form submission
+  // Function to handle login
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Make sure email and password are not empty
-    if (!email || !password) {
-      setError('Email and password are required.');
+    if (!username || !password) {
+      setError('Username and password are required.');
       return;
     }
 
-    // Make the API request to your backend for authentication
     try {
-      const response = await axios.post('your-authentication-endpoint', {
-        email,
-        password,
+      const response = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: username, password }), // Sending username instead of email
       });
 
-      // Assuming your backend returns a token upon successful login
-      const token = response.data.token;
-
-      // Perform actions after successful login, such as storing the token in localStorage
-      localStorage.setItem('token', token);
-
-      // Redirect to the admin dashboard or another protected route
-      // You may use react-router-dom's useHistory hook for this
-      // import { useHistory } from 'react-router-dom';
-      // const history = useHistory();
-      // history.push('/admin-dashboard');
+      if (response.ok) {
+        console.log('Login successful');
+        nav('/managementapp');
+        // Redirect to the dashboard or perform further actions upon successful login
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || 'Login failed');
+      }
     } catch (error) {
-      // Handle authentication errors
-      setError('Invalid email or password. Please try again.');
+      setError('An error occurred. Please try again.');
+      console.error('Login error:', error);
     }
   };
 
@@ -50,13 +49,13 @@ function Login() {
         </div>
 
         <form onSubmit={handleLogin}>
-          {/* Email Address */}
-          <label className='text-start fw-bold'>Email Address:</label>
+          {/* Username */}
+          <label className='text-start fw-bold'>Username:</label>
           <input
-            type="email"
-            placeholder='Email'
+            type="text"
+            placeholder='Username'
             className='form-control form-control-lg mb-3'
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           {/* Password */}
@@ -70,7 +69,7 @@ function Login() {
 
           {/* Login Button */}
           <div className="d-grid">
-            <input type="submit" value="Login" className="btn bg-black text-white mb-3" />
+            <button type="submit" className="btn bg-black text-white mb-3">Login</button>
           </div>
 
           {/* Error message */}
