@@ -36,7 +36,7 @@ app.get('/',(req, res)=>{
 
 
 app.get('/getUsers',(req, res)=>{
-    db.query('SELECT * FROM users',(err, data)=>{
+    db.query('SELECT * FROM users ORDER BY latest_activity DESC',(err, data)=>{
         if(err){
             return res.status(500).json({ error: 'Error executing query' });
         }else{
