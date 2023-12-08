@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import logo from './assets/white_tigum_logos/1whiteLog.svg';
 import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Card, CardHeader, CardBody } from "react-bootstrap";
 
 function Dashboard() {
   const [userData, setUserData] = useState([]);
@@ -90,35 +91,53 @@ function Dashboard() {
 
       <div className="container-fluid bg-white mt-4">
         <div className="container mt-4">
-          <h1 className="text-center mb-4">Dashboard</h1>
+        <div>
+          <h1 className="text-center mb-1"
+            style={{
+              color: '#6484AA',
+              fontSize: 68,
+              fontWeight: 700,
+              wordWrap: 'break-word',
+              paddingBottom: '0',
+            }}>
+            Dashboard
+          </h1>
+          <p style={{fontSize: 20, wordWrap: 'break-word', paddingBottom: '2%'}} >Welcome, <a style={{fontWeight: 700}}>Admin!</a> 
+            This is your centralized hub for managing and overseeing the operations of your platform. 
+            Here, you'll find a comprehensive overview of key metrics, Total Users, Monthly New Users, and Daily Active Users.
+          </p>
+        </div>
+        
 
-          <div className="row row-cols-1 row-cols-md-3 g-4">
-            <div className="col">
-              <div className="card h-100">
-                <div className="card-body">
-                  <h5 className="card-title">Total User Count</h5>
-                  <p className="card-text fs-1 text-center">{userCount}</p>
-                </div>
+        <div className="row row-cols-1 row-cols-md-3 g-4">
+          <div className="col">
+            <div className="card h-100">
+              <div className="card-body">
+                <h5 className="card-title">Total User Count</h5>
+                <p className="card-text fs-1 text-center">{userCount}</p>
               </div>
             </div>
-            <div className="col">
-              <div className="card h-100">
-                <div className="card-body">
-                  <h5 className="card-title">New Monthly Users</h5>
-                  <p className="card-text fs-1 text-center">{newUsers}</p>
-                </div>
+          </div>
+          <div className="col">
+            <div className="card h-100">
+              <div className="card-body">
+                <h5 className="card-title">New Monthly Users</h5>
+                <p className="card-text fs-1 text-center">{newUsers}</p>
               </div>
             </div>
-            <div className="col">
-              <div className="card h-100">
-                <div className="card-body">
-                  <h5 className="card-title">Daily Active Users</h5>
-                  <p className="card-text fs-1 text-center">{dailyUsers}</p>
-                </div>
+          </div>
+          <div className="col">
+            <div className="card h-100">
+              <div className="card-body">
+                <h5 className="card-title">Daily Active Users</h5>
+                <p className="card-text fs-1 text-center">{dailyUsers}</p>
               </div>
             </div>
           </div>
         </div>
+
+        </div>
+
       </div>
     </div>
   );
