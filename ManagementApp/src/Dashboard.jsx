@@ -90,7 +90,7 @@ function Dashboard() {
       </div>
 
       <div className="container-fluid bg-white mt-4">
-        <div className="container mt-4">
+        <div className="container mt-3">
         <div>
           <h1 className="text-center mb-1"
             style={{
@@ -114,7 +114,7 @@ function Dashboard() {
             <div className="card h-100">
               <div className="card-body">
                 <h5 className="card-title">Total User Count</h5>
-                <p className="card-text fs-1 text-center">{userCount}</p>
+                <p className="card-text fs-1 text-center ">{userCount}</p>
               </div>
             </div>
           </div>

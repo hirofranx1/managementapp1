@@ -16,9 +16,9 @@ const YourComponent = () => {
     fetch('http://localhost:8000/getUsers')
       .then((res) => res.json())
       .then((data) => {
-        // Sort the userData array based on latest_activity
+        // Sort the userData array alphabetically based on user names
         const sortedData = data.sort((a, b) =>
-          new Date(b.latest_activity) - new Date(a.latest_activity)
+          `${a.firstname} ${a.lastname}`.localeCompare(`${b.firstname} ${b.lastname}`)
         );
         setUserData(sortedData);
       })
@@ -113,7 +113,7 @@ const YourComponent = () => {
           {/* Header blue card */}
           <div className="container-fluid rounded-4 mb-4">
             <div className="container px-0">
-              <nav className="navbar border rounded-4 d-flex justify-content-between align-items-center m-0 px-3" style={{ backgroundColor: 'rgb(162, 188, 210)'}}>
+              <nav className="navbar border rounded-4 d-flex justify-content-between align-items-center m-0 px-3" style={{ backgroundColor: '#6484AA'}}>
                 <h1
                   className="text-center mb-1 display-6 mb-0 text-light"
                   style={{
@@ -134,7 +134,7 @@ const YourComponent = () => {
                 <p className="mb-1">
                   <strong>Please note:</strong>
                 </p>
-                <ul className=" mb-4">
+                <ul className="mb-4">
                   <li>Clicking the "Delete" button will permanently remove the user from the program.</li>
                   <li>Deletion is not automatic. We encourage you to review the list and only delete users who you believe should no longer have access.</li>
                   <li>If you believe a user should remain active even though they have been inactive for a year, please contact us before deleting them.</li>
@@ -151,9 +151,9 @@ const YourComponent = () => {
               <div className="row">
                 {userData.map((user, index) => (
                   <div key={index} className="col-md-4 mb-4">
-                    <div className="card">
+                    <div className="card h-100" style={{ width: '90%', margin: '0 5%' }}>
                       <div className="card-body">
-                        <h5 className="card-title">
+                        <h5 className="card-title fw-bold">
                           {user.firstname} {user.lastname}
                         </h5>
                         <p className="card-text">Email: {user.email}</p>
@@ -161,7 +161,7 @@ const YourComponent = () => {
                           Latest Activity:{' '}
                           {new Date(user.latest_activity).toLocaleDateString()}
                         </p>
-                        <div>
+                        <div style={{ textAlign: 'center', margin: '5% 0' }}>
                           {isActivityOld(user.latest_activity) ? (
                             <button
                               onClick={() => {
@@ -170,11 +170,14 @@ const YourComponent = () => {
                                 setUserId(user.user_id);
                               }}
                               className="btn btn-danger"
+                              style={{ width: '90%' }}
                             >
                               Delete User
                             </button>
                           ) : (
-                            <span>Cannot Delete User</span>
+                            <span style={{ fontFamily: 'monospace', color: 'rgb(36, 8, 91)', paddingTop: '143px' }}>
+                              Cannot Delete User
+                            </span>
                           )}
                         </div>
                       </div>
