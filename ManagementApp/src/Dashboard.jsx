@@ -60,14 +60,15 @@ function Dashboard() {
 
   const logoStyles = {
     width: '150px',
-    boxShadow: '0 4px 4px rgba(0, 0, 0, 0.25)',
+    shadow: '0 4px 4px rgba(0, 0, 0, 0.25)',
+    paddingTop: '10%' ,
   };
 
   return (
-    <div className="d-flex" style={{ minHeight: '100vh', backgroundColor: 'rgb(162, 188, 210)', fontFamily: 'Inter, sans-serif' }}>
-      <div className="text-light d-flex flex-column justify-content-between p-4" style={{ width: '250px', minHeight: '100vh' }}>
+    <div className="d-flex" style={{ minHeight: '100vh', fontFamily: 'Inter, sans-serif' }}>
+      <div className="text-light d-flex flex-column justify-content-between p-4" style={{ width: '250px', minHeight: '100vh', backgroundColor: 'rgb(162, 188, 210)' }}>
         <div>
-          <div className="logo text-center mb-4">
+          <div className="logo text-center mb-4" style={{padding: '70%,10%'}}>
             <img src={logo} style={logoStyles} alt="Logo" />
             <p>Admin Area</p>
           </div>
@@ -82,7 +83,7 @@ function Dashboard() {
             </ul>
           </div>
         </div>
-        <button className="btn btn-primary" onClick={handleLogout}>
+        <button className="btn btn-primary" onClick={handleLogout} style={{background: '#87A8D0'}}>
           Logout
         </button>
       </div>

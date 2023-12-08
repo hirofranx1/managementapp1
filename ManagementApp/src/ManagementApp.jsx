@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import logo from './assets/tigum_logos/logo-big.png';
+import logo from './assets/white_tigum_logos/1whiteLog.svg';
 
 const YourComponent = () => {
   const [userData, setUserData] = useState([{}]);
@@ -60,18 +60,22 @@ const YourComponent = () => {
     console.log('Users clicked');
   };
 
+  const logoStyles = {
+    width: '150px',
+    shadow: '0 4px 4px rgba(0, 0, 0, 0.25)',
+    paddingTop: '10%' ,
+  };
 
   return (
     <>
       {/* Navigation Side Bar */}
-      <div className="d-flex" style={{ minHeight: "100vh" }}>
-        {/* Sidebar */}
-        <div className="bg-dark text-light d-flex flex-column justify-content-between p-4" style={{ width: "250px", minHeight: "100vh" }}>
-          <div>
-            <div className="logo text-center mb-4">
-              <img src={logo} style={{ width: '150px' }} />
-              <p>Admin Area</p>
-            </div>
+       <div className="d-flex" style={{ minHeight: '100vh', fontFamily: 'Inter, sans-serif' }}>
+      <div className="text-light d-flex flex-column justify-content-between p-4" style={{ width: '250px', minHeight: '100vh', backgroundColor: 'rgb(162, 188, 210)' }}>
+        <div>
+          <div className="logo text-center mb-4" style={{padding: '70%,10%'}}>
+            <img src={logo} style={logoStyles} alt="Logo" />
+            <p>Admin Area</p>
+          </div>
             <div className="navigation-menu">
               {/* Add your navigation menu items here */}
               <ul className="list-group">
@@ -82,7 +86,7 @@ const YourComponent = () => {
             </div>
           </div>
           {/* Logout Button */}
-          <button className="btn btn-primary" onClick={handleLogout}>
+          <button className="btn btn-primary" onClick={handleLogout} style={{background: '#87A8D0'}}>
             Logout
           </button>
         </div>
