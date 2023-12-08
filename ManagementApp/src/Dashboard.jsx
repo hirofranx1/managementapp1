@@ -71,9 +71,9 @@ function Dashboard() {
   return (
     <>
       {/* Navigation Side Bar */}
-      <div className="d-flex" style={{ minHeight: "100vh" }}>
+      <div className="d-flex" style={{ minHeight: "100vh"}}>
         {/* Sidebar */}
-        <div className="bg-dark text-light d-flex flex-column justify-content-between p-4" style={{ width: "250px", minHeight: "100vh" }}>
+        <div className="text-light d-flex flex-column justify-content-between p-4" style={{ width: "250px", minHeight: "100vh", backgroundColor: "rgb(162, 188, 210)" }}>
           <div>
             <div className="logo text-center mb-4">
               <img src={logo} style={{ width: '150px' }} />
